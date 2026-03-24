@@ -8,7 +8,7 @@ import { useClassifier } from './composables/useClassifier';
 import type { FeedItem } from './types';
 
 const { settings } = useSettings();
-const { classifyItems, clearStyles } = useClassifier();
+const { classifyItems } = useClassifier();
 
 const isPanelOpen = ref(false);
 
@@ -37,16 +37,17 @@ watch(
   },
 );
 
-// When hide mode changes, re-clear and re-observe
+// When hide mode changes, only swap CSS classes without re-classifying
 watch(
   () => settings.value.hideMode,
-  () => {
-    clearStyles();
-    if (settings.value.enabled && settings.value.apiKey) {
-      // Reset observer to re-process all items
-      stopObserving();
-      setTimeout(() => startObserving(), 100);
-    }
+  (newMode) => {
+    document.querySelectorAll('[data-azh]').forEach((el) => {
+      el.classList.remove('azh-dimmed', 'azh-collapsed');
+      if (el.getAttribute('data-azh') === 'non-academic') {
+        if (newMode === 'dim' || newMode === 'both') el.classList.add('azh-dimmed');
+        if (newMode === 'collapse' || newMode === 'both') el.classList.add('azh-collapsed');
+      }
+    });
   },
 );
 </script>

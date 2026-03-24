@@ -4,7 +4,8 @@
       <div class="azh-panel-header">
         <h3>Academic Zhihu Filter</h3>
         <button class="azh-close-btn" @click="$emit('close')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -51,15 +52,22 @@
 
         <div class="azh-row">
           <span>隐藏模式</span>
-          <div class="azh-radio-group">
-            <label>
-              <input type="radio" value="dim" v-model="localSettings.hideMode" />
+          <div class="azh-toggle-group">
+            <button type="button" class="azh-toggle-btn"
+              :class="{ 'azh-toggle-btn--active': localSettings.hideMode === 'dim' }"
+              @click="localSettings.hideMode = 'dim'">
               颜色变淡
-            </label>
-            <label>
-              <input type="radio" value="collapse" v-model="localSettings.hideMode" />
+            </button>
+            <button type="button" class="azh-toggle-btn"
+              :class="{ 'azh-toggle-btn--active': localSettings.hideMode === 'collapse' }"
+              @click="localSettings.hideMode = 'collapse'">
               折叠
-            </label>
+            </button>
+            <button type="button" class="azh-toggle-btn"
+              :class="{ 'azh-toggle-btn--active': localSettings.hideMode === 'both' }"
+              @click="localSettings.hideMode = 'both'">
+              折叠+变淡
+            </button>
           </div>
         </div>
 
@@ -115,7 +123,7 @@ watch(
 );
 
 const PROVIDER_DEFAULTS: Record<ApiProvider, string> = {
-  'openai-compatible': 'https://api.openai.com/v1',
+  'openai-compatible': 'https://api.openai.com/v1/chat/completions',
   anthropic: 'https://api.anthropic.com/v1',
 };
 
@@ -283,7 +291,7 @@ async function onTest() {
   accent-color: #175199;
 }
 
-.azh-field > span:first-child {
+.azh-field>span:first-child {
   font-size: 14px;
   color: #1a1a1a;
 }
@@ -333,27 +341,44 @@ async function onTest() {
   box-shadow: 0 0 0 2px rgba(23, 81, 153, 0.1);
 }
 
-.azh-radio-group {
+.azh-toggle-group {
   display: flex;
-  gap: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
-.azh-radio-group label {
+.azh-toggle-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
+  gap: 5px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #666;
+  background: #fff;
+  border: none;
   cursor: pointer;
-  color: #1a1a1a;
+  transition: all 0.15s;
+  font-family: inherit;
+  box-sizing: border-box;
+  border-right: 1px solid #e0e0e0;
 }
 
-.azh-radio-group input[type='radio'] {
-  accent-color: #175199;
-  all: initial;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  accent-color: #175199;
+.azh-toggle-btn:last-child {
+  border-right: none;
+}
+
+.azh-toggle-btn:hover {
+  background: #f6f6f6;
+}
+
+.azh-toggle-btn--active {
+  background: #175199;
+  color: #fff;
+}
+
+.azh-toggle-btn--active:hover {
+  background: #1a5cb0;
 }
 
 .azh-panel-footer {

@@ -19,10 +19,9 @@ GM.addStyle(`
   .azh-collapsed {
     max-height: 48px !important;
     overflow: hidden !important;
-    transition: max-height 0.3s linear !important;
   }
   .azh-collapsed:hover {
-    max-height: 1000px !important;
+    max-height: none !important;
   }
   .azh-loading {
     border-left: 3px solid #999 !important;
@@ -53,11 +52,9 @@ export function useClassifier() {
       card.setAttribute('data-azh', 'academic');
     } else {
       stats.value.nonAcademic++;
-      if (settings.value.hideMode === 'dim') {
-        card.classList.add('azh-dimmed');
-      } else {
-        card.classList.add('azh-collapsed');
-      }
+      const mode = settings.value.hideMode;
+      if (mode === 'dim' || mode === 'both') card.classList.add('azh-dimmed');
+      if (mode === 'collapse' || mode === 'both') card.classList.add('azh-collapsed');
       card.setAttribute('data-azh', 'non-academic');
     }
   }
@@ -83,6 +80,7 @@ export function useClassifier() {
         itemStatusMap.value.set(item.itemId, 'loading');
         const card = getCard(item.element);
         card?.classList.add('azh-loading');
+        card?.setAttribute('data-azh', 'processing');
       });
 
       try {
@@ -106,6 +104,7 @@ export function useClassifier() {
             itemStatusMap.value.set(item.itemId, 'error');
             const card = getCard(item.element);
             card?.classList.remove('azh-loading');
+            card?.setAttribute('data-azh', 'error');
           }
         });
       }

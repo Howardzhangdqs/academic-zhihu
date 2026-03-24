@@ -9,9 +9,9 @@ export default defineConfig({
       entry: 'src/main.ts',
       userscript: {
         icon: 'https://vitejs.dev/logo.svg',
-        name: 'Academic Zhihu Filter',
+        name: '知乎过滤器',
         namespace: 'academic-zhihu',
-        description: '使用 LLM 自动识别并隐藏知乎上的非学术内容',
+        description: '让你的知乎变得更学术',
         version: '0.1.0',
         match: ['https://www.zhihu.com'],
         connect: [
@@ -24,6 +24,7 @@ export default defineConfig({
         ],
         grant: ['GM_xmlhttpRequest', 'GM_getValue', 'GM_setValue', 'GM_addStyle'],
         'run-at': 'document-idle',
+        license: 'MIT',
       },
       build: {
         externalGlobals: {

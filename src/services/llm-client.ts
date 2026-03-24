@@ -122,7 +122,7 @@ function buildAnthropicUrl(baseUrl: string): string {
 }
 
 function mergeHeaders(defaults: Record<string, string>, customJson: string): Record<string, string> {
-  if (!customJson.trim()) return defaults;
+  if (!customJson?.trim()) return defaults;
   try {
     const custom = JSON.parse(customJson);
     return { ...defaults, ...custom };
@@ -133,7 +133,7 @@ function mergeHeaders(defaults: Record<string, string>, customJson: string): Rec
 }
 
 function mergeBody(defaults: Record<string, unknown>, customJson: string): string {
-  if (!customJson.trim()) return JSON.stringify(defaults);
+  if (!customJson?.trim()) return JSON.stringify(defaults);
   try {
     const custom = JSON.parse(customJson);
     return JSON.stringify({ ...defaults, ...custom }, null, 2);
@@ -200,7 +200,7 @@ async function callAnthropic(settings: UserSettings, userMessage: string): Promi
   }
 
   const body = JSON.parse(response.responseText) as { content: Array<{ text: string }> };
-  return body.content[0].text;
+  return body.content?.[0]?.text ?? '';
 }
 
 export async function testConnection(settings: UserSettings): Promise<{ ok: boolean; message: string }> {
@@ -215,7 +215,8 @@ export async function testConnection(settings: UserSettings): Promise<{ ok: bool
     } else {
       reply = await callOpenAI(testSettings, 'Reply with exactly: OK');
     }
-    return { ok: true, message: `连接成功！模型返回: ${reply.trim().substring(0, 100)}` };
+    const trimmed = reply?.trim() ?? '';
+    return { ok: true, message: `连接成功！模型返回: ${trimmed.substring(0, 100)}` };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return { ok: false, message: `连接失败: ${msg}` };

@@ -7,7 +7,7 @@ export interface UserSettings {
   apiKey: string;
   modelName: string;
   systemPrompt: string;
-  hideMode: 'dim' | 'collapse';
+  hideMode: 'dim' | 'collapse' | 'both';
   batchSize: number;
   customHeaders: string;
   customBody: string;

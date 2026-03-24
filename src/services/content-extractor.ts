@@ -13,10 +13,6 @@ export function extractFeedItem(element: HTMLElement): FeedItem | null {
       authorName = String(zop.authorName || '');
     }
 
-    if (!itemId) {
-      itemId = `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    }
-
     const titleEl = element.querySelector(SELECTORS.titleLink);
     const title = titleEl?.textContent?.trim() || '';
     const url = (titleEl as HTMLAnchorElement)?.href || '';
@@ -26,6 +22,11 @@ export function extractFeedItem(element: HTMLElement): FeedItem | null {
 
     const isArticle = element.classList.contains('ArticleItem');
     const type: FeedItem['type'] = isArticle ? 'article' : 'answer';
+
+    if (!itemId) {
+      const seed = `${title}-${authorName}-${type}`;
+      itemId = `item-${Array.from(seed).reduce((h, c) => ((h << 5) - h + c.charCodeAt(0)) | 0, 0)}`;
+    }
 
     if (!title && !excerpt) return null;
 
