@@ -30,3 +30,7 @@ dist-ssr
 *.sw?
 
 .opencode/
+
+greasyfork.md
+introduction.md
+zhihu-post.md

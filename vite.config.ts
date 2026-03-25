@@ -8,11 +8,11 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        icon: 'https://vitejs.dev/logo.svg',
+        icon: 'https://static.zhihu.com/heifetz/favicon.ico',
         name: '知乎过滤器',
         namespace: 'academic-zhihu',
         description: '让你的知乎变得更学术',
-        version: '0.1.0',
+        version: '0.1.1',
         match: ['https://www.zhihu.com'],
         connect: [
           'api.openai.com',
